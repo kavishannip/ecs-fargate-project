@@ -45,3 +45,9 @@ variable "health_check_path" {
   type        = string
   default     = "/health"
 }
+
+variable "github_repository" {
+  description = "GitHub repository in format: owner/repo-name"
+  type        = string
+  default     = "kavishannip/ecs-fargate-project"
+}
