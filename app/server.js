@@ -1,8 +1,11 @@
 const express = require("express");
 const os = require("os");
 
+// Load environment variables from .env file
+require("dotenv").config();
+
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Health check endpoint
 app.get("/health", (req, res) => {
@@ -26,8 +29,8 @@ app.get("/", (req, res) => {
 // Info endpoint
 app.get("/info", (req, res) => {
   res.json({
-    app: "ECS Fargate Node.js App",
-    version: "1.0.0",
+    app: process.env.APP_NAME || "ECS Fargate Node.js App",
+    version: process.env.APP_VERSION || "1.0.0",
     environment: process.env.NODE_ENV || "production",
     container: os.hostname(),
   });
