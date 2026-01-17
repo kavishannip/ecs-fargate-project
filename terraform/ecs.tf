@@ -100,37 +100,18 @@ resource "aws_ecs_task_definition" "app" {
 # ECS Service
 resource "aws_ecs_service" "app" {
   name            = var.project_name
-  cluster         = module.ecs_cluster.cluster_id
+  cluster         = var.project_name
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = var.app_count
   launch_type     = "FARGATE"
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = aws_subnet.private[*].id
-    assign_public_ip = false
+    subnets          = aws_subnet.public[*].id
+    assign_public_ip = true
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.app.arn
-    container_name   = var.project_name
-    container_port   = var.container_port
-  }
 
-  deployment_configuration {
-    maximum_percent         = 200
-    minimum_healthy_percent = 100
-  }
-
-  deployment_circuit_breaker {
-    enable   = true
-    rollback = true
-  }
-
-  depends_on = [
-    aws_lb_listener.app,
-    aws_iam_role_policy.ecs_task_execution_ecr
-  ]
 
   tags = {
     Name = "${var.project_name}-service"

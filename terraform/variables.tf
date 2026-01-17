@@ -25,7 +25,7 @@ variable "container_port" {
 variable "app_count" {
   description = "Number of tasks"
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "fargate_cpu" {

@@ -3,19 +3,9 @@ output "ecr_repository_url" {
   value       = aws_ecr_repository.app.repository_url
 }
 
-output "alb_dns_name" {
-  description = "ALB DNS name"
-  value       = aws_lb.main.dns_name
-}
-
-output "alb_url" {
-  description = "ALB URL"
-  value       = "http://${aws_lb.main.dns_name}"
-}
-
 output "ecs_cluster_name" {
   description = "ECS cluster name"
-  value       = module.ecs_cluster.cluster_name
+  value       = var.project_name
 }
 
 output "ecs_service_name" {
@@ -31,4 +21,14 @@ output "github_actions_role_arn" {
 output "cloudwatch_log_group" {
   description = "CloudWatch log group name"
   value       = aws_cloudwatch_log_group.app.name
+}
+
+output "vpc_id" {
+  description = "VPC ID"
+  value       = aws_vpc.main.id
+}
+
+output "public_subnets" {
+  description = "Public subnet IDs"
+  value       = aws_subnet.public[*].id
 }
