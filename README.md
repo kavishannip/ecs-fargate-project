@@ -178,6 +178,5 @@ ecs-fargate-project/
 ## Author
 
 **Kavishan Nipun**  
-**Index Number:** 22ug1-0704  
-
-
+**Index Number:** 22ug1-0704
+CCS3316-Cloud Infrastructure Design
