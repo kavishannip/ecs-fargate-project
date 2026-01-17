@@ -177,7 +177,7 @@ ecs-fargate-project/
 
 ## Author
 
-**Kavishan Nipunajith**  
+**Kavishan Nipun**  
 **Index Number:** 22ug1-0704  
-**Course:** CCS3316 - Cloud Infrastructure Design  
-**Repository:** [github.com/kavishannip/ecs-fargate-project](https://github.com/kavishannip/ecs-fargate-project)
+
+
