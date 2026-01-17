@@ -18,7 +18,7 @@ app.get("/health", (req, res) => {
 // Main endpoint
 app.get("/", (req, res) => {
   res.json({
-    message: "Welcome to ECS Fargate Demo!",
+    message: "Hello from Kavishan Nipun 22ug1-0704",
     hostname: os.hostname(),
     platform: os.platform(),
     uptime: process.uptime(),
