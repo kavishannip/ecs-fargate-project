@@ -2,8 +2,6 @@
 
 A containerized Node.js application deployed on AWS ECS Fargate with automated CI/CD pipeline.
 
-**Live Application:** http://43.205.211.205:8080
-
 ---
 
 ## Overview
@@ -70,29 +68,78 @@ git push origin main
 
 GitHub Actions automatically builds, pushes to ECR, and deploys to ECS.
 
-### 5. Get Application URL
+### 5. Access Your Application
 
-```powershell
-$taskArn = (aws ecs list-tasks --cluster ecs-fargate-app --region ap-south-1 --output json | ConvertFrom-Json).taskArns[0]
-$eniId = (aws ecs describe-tasks --cluster ecs-fargate-app --tasks $taskArn --region ap-south-1 --output json | ConvertFrom-Json).tasks[0].attachments[0].details | Where-Object { $_.name -eq 'networkInterfaceId' } | Select-Object -ExpandProperty value
-$publicIp = (aws ec2 describe-network-interfaces --network-interface-ids $eniId --region ap-south-1 --output json | ConvertFrom-Json).NetworkInterfaces[0].Association.PublicIp
-Write-Host "Application URL: http://${publicIp}:8080"
-```
+Once deployment completes, see the **"How to Test the Application"** section below to get the current public IP and test your endpoints.
 
 ---
 
-## Application Endpoints
+## How to Test the Application
 
-| Endpoint  | Description     | Response                                                          |
-| --------- | --------------- | ----------------------------------------------------------------- |
-| `/`       | Welcome message | `{"message": "Welcome to ECS Fargate Demo!", "timestamp": "..."}` |
-| `/health` | Health check    | `{"status": "healthy", "timestamp": "..."}`                       |
+### Step 1: Get Current Public IP
 
-### Testing
+The ECS task uses a dynamic public IP. Run this command to get the current IP address:
+
+```powershell
+# PowerShell
+$taskArn = (aws ecs list-tasks --cluster ecs-fargate-app --region ap-south-1 --output json | ConvertFrom-Json).taskArns[0]
+$eniId = (aws ecs describe-tasks --cluster ecs-fargate-app --tasks $taskArn --region ap-south-1 --output json | ConvertFrom-Json).tasks[0].attachments[0].details | Where-Object { $_.name -eq 'networkInterfaceId' } | Select-Object -ExpandProperty value
+$publicIp = (aws ec2 describe-network-interfaces --network-interface-ids $eniId --region ap-south-1 --output json | ConvertFrom-Json).NetworkInterfaces[0].Association.PublicIp
+Write-Host "Application available at: http://${publicIp}:8080"
+```
+
+### Step 2: Test the Endpoints
+
+Once you have the public IP, test the application:
+
+**Main Endpoint:**
 
 ```bash
-curl http://43.205.211.205:8080
-curl http://43.205.211.205:8080/health
+curl http://<PUBLIC_IP>:8080
+```
+
+Expected response:
+
+```json
+{
+  "message": "Hello from Kavishan Nipun 22ug1-0704",
+  "hostname": "...",
+  "platform": "linux",
+  "uptime": 123.45,
+  "timestamp": "2026-01-17T..."
+}
+```
+
+**Health Check Endpoint:**
+
+```bash
+curl http://<PUBLIC_IP>:8080/health
+```
+
+Expected response:
+
+```json
+{
+  "status": "healthy",
+  "timestamp": "2026-01-17T..."
+}
+```
+
+**Info Endpoint:**
+
+```bash
+curl http://<PUBLIC_IP>:8080/info
+```
+
+Expected response:
+
+```json
+{
+  "app": "ECS Fargate Node.js App",
+  "version": "1.0.0",
+  "environment": "production",
+  "container": "..."
+}
 ```
 
 ---
