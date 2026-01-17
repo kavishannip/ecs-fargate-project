@@ -134,8 +134,3 @@ ecs-fargate-project/
 **Index Number:** 22ug1-0704  
 **Course:** CCS3316 - Cloud Infrastructure Design  
 **Repository:** [github.com/kavishannip/ecs-fargate-project](https://github.com/kavishannip/ecs-fargate-project)
-
----
-
-**Last Updated:** January 17, 2026  
-**Application Status:** ✅ Running at http://43.205.211.205:8080
